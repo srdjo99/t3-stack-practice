@@ -2,48 +2,70 @@ import { getOptionsForVote } from "@/utils/getRandomPokemon";
 import { trpc } from "@/utils/trpc";
 import { useQueries } from "@tanstack/react-query";
 
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "@/server/routers/_app";
+
 import { useState, useEffect } from "react";
+import type React from "react";
 
 const Home = () => {
-  const [ids, updateIds] = useState(() => getOptionsForVote());
+  const [ids, updateIds] = useState(getOptionsForVote);
 
   const [first, second] = ids;
 
   const firstPokemon = trpc.getPokemonById.useQuery({ id: first });
-  console.log(firstPokemon);
   const secondPokemon = trpc.getPokemonById.useQuery({ id: second });
-  console.log(secondPokemon);
 
-  if (firstPokemon.isLoading || secondPokemon.isLoading) return null;
+  const voteForRoundest = (selected: number) => {
+    // todo: fire mutation to persist changes
+    updateIds(getOptionsForVote());
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
       <div className="text-2xl text-center ">Which Pokemon is Rounder?</div>
       <div className="p-2" />
       <div className="flex items-center justify-between max-w-2xl p-8 border rounded">
-        <div className="flex flex-col w-64 h-64">
-          <img
-            src={firstPokemon.data?.sprites.front_default}
-            alt="first pokemon"
-            className="w-full"
-          />
-          <div className="text-xl text-center capitalize mt-[-2rem]">
-            {firstPokemon.data?.name}
-          </div>
-        </div>
-        <div className="p-8">vs</div>
-        <div className="flex flex-col w-64 h-64">
-          <img
-            src={secondPokemon.data?.sprites.front_default}
-            alt="second pokemon"
-            className="w-full"
-          />
-          <div className="text-xl text-center capitalize mt-[-2rem]">
-            {secondPokemon.data?.name}
-          </div>
-        </div>
+        {!firstPokemon.isLoading &&
+          firstPokemon.data &&
+          !secondPokemon.isLoading &&
+          secondPokemon.data && (
+            <>
+              <PokemonListing
+                pokemon={firstPokemon.data}
+                vote={() => voteForRoundest(first)}
+              />
+              <div className="p-8">vs</div>
+              <PokemonListing
+                pokemon={secondPokemon.data}
+                vote={() => voteForRoundest(second)}
+              />
+            </>
+          )}
         <div className="p-2" />
       </div>
+    </div>
+  );
+};
+
+type PokemonOutput = inferRouterOutputs<AppRouter>;
+type PokemonFromServer = PokemonOutput["getPokemonById"];
+
+const PokemonListing: React.FC<{
+  pokemon: PokemonFromServer;
+  vote: () => void;
+}> = (props) => {
+  return (
+    <div className="flex flex-col">
+      <img
+        src={props.pokemon.sprites.front_default!}
+        alt="first pokemon"
+        className="w-64 h-64 "
+      />
+      <div className="text-xl text-center capitalize mt-[-2rem]">
+        {props.pokemon.name}
+      </div>
+      <button onClick={() => props.vote()}>Rounder</button>
     </div>
   );
 };
