@@ -30,30 +30,35 @@ const Home = () => {
     updateIds(getOptionsForVote());
   };
 
+  const dataLoaded =
+    !firstPokemon.isLoading &&
+    firstPokemon.data &&
+    !secondPokemon.isLoading &&
+    secondPokemon.data;
+
   return (
-    <div className="relative flex flex-col items-center justify-center w-screen h-screen">
+    <div className="relative flex flex-col items-center justify-between w-screen h-screen">
       <div className="text-2xl text-center ">Which Pokemon is Rounder?</div>
       <div className="p-2" />
       <div className="flex items-center justify-between max-w-2xl p-8 border rounded">
-        {!firstPokemon.isLoading &&
-          firstPokemon.data &&
-          !secondPokemon.isLoading &&
-          secondPokemon.data && (
-            <>
-              <PokemonListing
-                pokemon={firstPokemon.data}
-                vote={() => voteForRoundest(first)}
-              />
-              <div className="p-8">vs</div>
-              <PokemonListing
-                pokemon={secondPokemon.data}
-                vote={() => voteForRoundest(second)}
-              />
-            </>
-          )}
+        {dataLoaded ? (
+          <>
+            <PokemonListing
+              pokemon={firstPokemon.data}
+              vote={() => voteForRoundest(first)}
+            />
+            <div className="p-8">vs</div>
+            <PokemonListing
+              pokemon={secondPokemon.data}
+              vote={() => voteForRoundest(second)}
+            />
+          </>
+        ) : (
+          <img src="/rings.svg" alt="loader" />
+        )}
         <div className="p-2" />
       </div>
-      <div className="absolute bottom-0 w-full pb-2 text-xl text-center">
+      <div className="w-full pb-2 text-xl text-center ">
         <a href="https://github.com/srdjo99/t3-stack-practice">Github</a> |
         <Link href="/results">Results</Link>
       </div>
