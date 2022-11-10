@@ -1,18 +1,30 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_URL")
-  relationMode      = "prisma"
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  shadowDatabaseUrl    = env("SHADOW_URL")
+  referentialIntegrity = "prisma"
 }
 
 model Vote {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  votedFor     Int
-  votedAgainst Int
+  id       String   @id @default(cuid())
+  createAt DateTime @default(now())
+
+  votedFor       Pokemon @relation(name: "votesFor", fields: [votedForId], references: [id])
+  votedForId     Int
+  votedAgainst   Pokemon @relation(name: "votesAgainst", fields: [votedAgainstId], references: [id])
+  votedAgainstId Int
+}
+
+model Pokemon {
+  id Int @id
+
+  name        String
+  spriteUrl   String
+  VoteFor     Vote[] @relation("votesFor")
+  VoteAgainst Vote[] @relation("votesAgainst")
 }
