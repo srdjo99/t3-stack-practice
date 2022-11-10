@@ -38,8 +38,7 @@ const Home = () => {
 
   return (
     <div className="relative flex flex-col items-center justify-between w-screen h-screen">
-      <div className="text-2xl text-center ">Which Pokemon is Rounder?</div>
-      <div className="p-2" />
+      <div className="pt-8 text-2xl text-center">Which Pokemon is Rounder?</div>
       <div className="flex items-center justify-between max-w-2xl p-8 border rounded">
         {dataLoaded ? (
           <>
@@ -52,12 +51,13 @@ const Home = () => {
               pokemon={secondPokemon.data}
               vote={() => voteForRoundest(second)}
             />
+            <div className="p-2"></div>
           </>
         ) : (
-          <img src="/rings.svg" alt="loader" />
+          <img src="/rings.svg" alt="loader" className="w-48" />
         )}
-        <div className="p-2" />
       </div>
+
       <div className="w-full pb-2 text-xl text-center ">
         <a href="https://github.com/srdjo99/t3-stack-practice">Github</a> |
         <Link href="/results">Results</Link>
