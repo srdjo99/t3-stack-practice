@@ -69,7 +69,7 @@ const PokemonListing: React.FC<{
   return (
     <div className="flex flex-col">
       <Image
-        src={props.pokemon.sprites.front_default!}
+        src={props.pokemon.spriteUrl}
         alt="first pokemon"
         className="w-64 h-64"
         width={256}
