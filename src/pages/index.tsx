@@ -30,7 +30,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
+    <div className="relative flex flex-col items-center justify-center w-screen h-screen">
       <div className="text-2xl text-center ">Which Pokemon is Rounder?</div>
       <div className="p-2" />
       <div className="flex items-center justify-between max-w-2xl p-8 border rounded">
@@ -51,6 +51,9 @@ const Home = () => {
             </>
           )}
         <div className="p-2" />
+      </div>
+      <div className="absolute bottom-0 w-full pb-2 text-xl text-center">
+        <a href="https://github.com/srdjo99/t3-stack-practice">Github</a>
       </div>
     </div>
   );
