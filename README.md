@@ -10,10 +10,3 @@ First, run the development server:
 # or
 yarn dev
 ```
-
-## TODO
-
-- [ ] Persist data fetch from PokemonAPI
-- [ ] Create the results page with counting/sorting
-- [ ] Use next/image to handle image caching and better rendering
-- [ ] Maybe move images to bulbapedia
