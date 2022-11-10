@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import type React from "react";
 
 import Image from "next/image";
+import Link from "next/link";
 
 const Home = () => {
   const [ids, updateIds] = useState(getOptionsForVote);
@@ -53,7 +54,8 @@ const Home = () => {
         <div className="p-2" />
       </div>
       <div className="absolute bottom-0 w-full pb-2 text-xl text-center">
-        <a href="https://github.com/srdjo99/t3-stack-practice">Github</a>
+        <a href="https://github.com/srdjo99/t3-stack-practice">Github</a> |
+        <Link href="/results">Results</Link>
       </div>
     </div>
   );
