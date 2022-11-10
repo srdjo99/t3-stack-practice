@@ -7,6 +7,8 @@ import type { AppRouter } from "@/server/routers/_app";
 import { useState, useEffect } from "react";
 import type React from "react";
 
+import Image from "next/image";
+
 const Home = () => {
   const [ids, updateIds] = useState(getOptionsForVote);
 
@@ -63,10 +65,13 @@ const PokemonListing: React.FC<{
 }> = (props) => {
   return (
     <div className="flex flex-col">
-      <img
+      <Image
         src={props.pokemon.sprites.front_default!}
         alt="first pokemon"
-        className="w-64 h-64 "
+        className="w-64 h-64"
+        width={256}
+        height={256}
+        layout="fixed"
       />
       <div className="text-xl text-center capitalize mt-[-2rem]">
         {props.pokemon.name}
