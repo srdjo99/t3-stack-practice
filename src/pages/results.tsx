@@ -25,17 +25,28 @@ const getPokemonInOrder = async () => {
 
 type PokemonQueryResult = AsyncReturnType<typeof getPokemonInOrder>;
 
-const PokemonListing: FC<{ pokemon: PokemonQueryResult[number] }> = (props) => {
+const generateCountPercent = (pokemon: PokemonQueryResult[number]) => {
+  const { VoteFor, VoteAgainst } = pokemon._count;
+  if (VoteFor + VoteAgainst === 0) return 0;
+  return (VoteFor / (VoteFor + VoteAgainst)) * 100;
+};
+
+const PokemonListing: FC<{ pokemon: PokemonQueryResult[number] }> = ({
+  pokemon,
+}) => {
   return (
-    <div className="flex items-center p-4 border-b">
-      <Image
-        src={props.pokemon.spriteUrl}
-        width={64}
-        height={64}
-        layout="fixed"
-        alt="image"
-      />
-      <div className="capitalize">{props.pokemon.name}</div>
+    <div className="flex items-center justify-between p-4 border-b">
+      <div className="flex items-center">
+        <Image
+          src={pokemon.spriteUrl}
+          width={64}
+          height={64}
+          layout="fixed"
+          alt="image"
+        />
+        <div className="capitalize">{pokemon.name}</div>
+      </div>
+      <div className="pr-4">{generateCountPercent(pokemon) + "%"}</div>
     </div>
   );
 };
