@@ -1,6 +1,5 @@
 import { getOptionsForVote } from "@/utils/getRandomPokemon";
 import { trpc } from "@/utils/trpc";
-import { useQueries } from "@tanstack/react-query";
 
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/routers/_app";
@@ -16,7 +15,14 @@ const Home = () => {
   const firstPokemon = trpc.getPokemonById.useQuery({ id: first });
   const secondPokemon = trpc.getPokemonById.useQuery({ id: second });
 
+  const voteMutation = trpc.castVote.useMutation();
+
   const voteForRoundest = (selected: number) => {
+    if (selected === first) {
+      voteMutation.mutate({ votedFor: first, votedAgainst: second });
+    } else {
+      voteMutation.mutate({ votedFor: second, votedAgainst: first });
+    }
     // todo: fire mutation to persist changes
     updateIds(getOptionsForVote());
   };
